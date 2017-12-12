@@ -26,6 +26,8 @@ void gepikod ()
 
 int main()
 {
-
+    lengyel();
+    regiszteres();
+    gepikod();
     return 0;
 }
