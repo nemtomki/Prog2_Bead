@@ -4,7 +4,7 @@ using namespace std;
 
 void lengyel ()
 {
-// Peti, kapok .txt fájlt, aminél a példa legyen:
+// Peti, kapok .txt fájlt, aminél a példa legyen:  proba.txt VALAMI=
 // ezt leforditom lengyel formává:
 
 }
@@ -19,7 +19,7 @@ void regiszteres ()
 void gepikod ()
 
 {
-//Lcai a kapott gépi kódot, kiszámolja:
+//Laci a kapott gépi kódot, kiszámolja:
 
 //eredmény , adott példákkal:
 }
