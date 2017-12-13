@@ -1,5 +1,9 @@
 #include <iostream>
-
+struct szoveg {
+string fnev;
+ stack<string> lkod;
+ string gkod;
+} ;
 using namespace std;
 
 void lengyel ()
@@ -26,6 +30,8 @@ void gepikod ()
 
 int main()
 {
+    szoveg pelda;
+    pelda.fnev=''proba.txt'';
     lengyel();
     regiszteres();
     gepikod();
