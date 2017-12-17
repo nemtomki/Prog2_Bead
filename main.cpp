@@ -1,20 +1,17 @@
 #include <iostream>
-
-using namespace std;
-
-int main()
-{
-    cout << "Hello world!" << endl;
-=======
 #include <vector>
-#include <struct>
 #include <string>
+#include <stack>
+#include <cstdlib>
+#include <stdio.h>
+
 using namespace std;
-struct szoveg {
+struct szoveg { //szerintem a structban inkább egy-egy aritmetikai utasításnak kéne csak lenine, nem az egész kódnak
 string fnev;
  stack<string> lkod;
  string gkod;
-} ;
+};
+
 void lengyel (szoveg &pelda)
 {
 // Peti, kapok .txt fájlt, aminél a példa legyen:  proba.txt VALAMI=a^b+(c+d)*a-e
@@ -26,6 +23,16 @@ void regiszteres (szoveg &pelda)
 {
 //Áron kapja a lengyel formát: lengyel.txt ab^cd+a*+e-
 //leforditja regiszteresre:
+    stack<string> current = pelda.lkod;
+    while(!current.empty()){
+        if(strtod(current.top().c_str(), NULL)==0.0){
+            //operandus lesz a gyermek
+        }
+        else {
+            //számmal játszom
+        }
+        current.pop();
+    }
 }
 
 
@@ -40,7 +47,7 @@ void gepikod (szoveg &pelda)
 int main()
 {
     szoveg pelda;
-    pelda.fnev=''proba.txt'';
+    //pelda.fnev=''proba.txt'';
     lengyel(pelda);
     regiszteres(pelda);
     gepikod(pelda);
