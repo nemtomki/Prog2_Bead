@@ -7,9 +7,10 @@
 
 using namespace std;
 struct szoveg { //szerintem a structban inkább egy-egy aritmetikai utasításnak kéne csak lenine, nem az egész kódnak
-string fnev;
+ string fnev;
  stack<string> lkod;
  string gkod;
+ vector<bool> registers; //van-e az adott regiszterben valami
 };
 
 void lengyel (szoveg &pelda)
@@ -24,15 +25,21 @@ void regiszteres (szoveg &pelda)
 //Áron kapja a lengyel formát: lengyel.txt ab^cd+a*+e-
 //leforditja regiszteresre:
     stack<string> current = pelda.lkod;
+    string resultname = current.top();
+    current.pop();
     while(!current.empty()){
+        string temp;
+        string operand_1;
+        string operand_2;
         if(strtod(current.top().c_str(), NULL)==0.0){
-            //operandus lesz a gyermek
+            temp+="reg[1]"+current.top()+"reg[2];";
+            current.pop();
         }
         else {
             //számmal játszom
         }
-        current.pop();
     }
+    pelda.gkod+=temp;
 }
 
 
