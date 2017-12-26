@@ -10,7 +10,7 @@ struct szoveg { //szerintem a structban inkább egy-egy aritmetikai utasításna
  string fnev;
  stack<string> lkod;
  string gkod;
- vector<bool> registers; //van-e az adott regiszterben valami
+ vector<pair<bool, double> > registers; //van-e az adott regiszterben valami
 };
 
 void lengyel (szoveg &pelda)
@@ -36,10 +36,17 @@ void regiszteres (szoveg &pelda)
             current.pop();
         }
         else {
-            //számmal játszom
+            for(int i = 0; i < pelda.registers.size(); i++){
+                if(pelda.registers[i].first != true){
+                    pelda.registers[i].first = true;
+                    pelda.registers[i].second = strtod(current.top().c_str(), NULL);
+                    temp+="reg["+to_string(i)+"]="+current.top();
+                    current.pop();
+                }
+            }
         }
+        pelda.gkod+=temp;
     }
-    pelda.gkod+=temp;
 }
 
 
