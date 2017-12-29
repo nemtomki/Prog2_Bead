@@ -31,20 +31,20 @@ void lengyel (szoveg &pelda)
 
 }
 
-void sortatir (valtozo &pelda){
+void sortatir (sor &pelda){
 	stack<string> curr = pelda.lkod;
 	string res;
- while(!curr.empty()){
-		if(isdigit(curr.top()[0])){
- 			   
-  }
-		else if(isalpha(curr.top()[0])){
-			
-		}
-		else{
-			
-		}
- }
+    while(!curr.empty()){
+        if(isdigit(curr.top()[0])){
+
+        }
+        else if(isalpha(curr.top()[0])){
+
+        }
+        else{
+
+        }
+    }
 }
 
 void regiszteres (szoveg &pelda)
@@ -52,8 +52,10 @@ void regiszteres (szoveg &pelda)
 //Áron kapja a lengyel formát: lengyel.txt ab^cd+a*+e-
 //leforditja regiszteresre:
     stack<string> current = pelda.lkod;
-    string resultname = current.top();
-    current.pop();
+    if(!current.empty()){
+        string resultname = current.top();
+        current.pop();
+    }
     while(!current.empty()){
         string temp;
         string operand_1;
@@ -89,7 +91,7 @@ void gepikod (szoveg &pelda)
 int main()
 {
     szoveg pelda;
-    //pelda.fnev=''proba.txt'';
+   // pelda.fnev=''proba.txt'';
     lengyel(pelda);
     regiszteres(pelda);
     gepikod(pelda);
