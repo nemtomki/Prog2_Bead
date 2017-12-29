@@ -50,16 +50,12 @@ void lengyel (szoveg &pelda)
 }*/
 
 
+
 void regiszteres (szoveg &pelda)
 {
 //Áron kapja a lengyel formát: lengyel.txt ab^cd+a*+e-
 //leforditja regiszteresre:
     stack<string> current = pelda.lkod;
-    string resultname;
-    if(!current.empty()){
-        resultname = current.top();
-        current.pop();
-    }
     queue<string> operands;
     while(!current.empty()){
         string temp;
@@ -72,17 +68,25 @@ void regiszteres (szoveg &pelda)
                 [op1](const pair<bool,string>& elem) {return op1.compare(elem.second)==0;}))+1;
             int op2_reg = distance(pelda.registers.begin(), find_if(pelda.registers.begin(), pelda.registers.end(),
                 [op2](const pair<bool,string>& elem) {return op2.compare(elem.second)==0;}))+1;
-            temp += resultname + " = reg["+to_string(op1_reg)+"] "+current.top()+" reg["+to_string(op2_reg)+"]\n";
-
+            string utasitas = "reg[" + to_string(op1_reg)+"] " + current.top() + " reg["+to_string(op2_reg) + "]";
+            for(int i = 0; i < pelda.registers.size(); i++){
+                if(pelda.registers[i].first == 0){
+                    pelda.registers[i].first = true;
+                    pelda.registers[i].second = utasitas;
+                    temp += "reg[" + to_string(i+1) + "]";
+                    operands.push(utasitas);
+                    break;
+                }
+            }
+            temp += " = " + utasitas + "\n";
             current.pop();
-            //cout <<"registers: " << op1_reg << "\t" << op2_reg << endl;
         }
         else if(!current.top().empty()){
             for(int i = 0; i < pelda.registers.size(); i++){
                 if(pelda.registers[i].first == 0){
                     pelda.registers[i].first = true;
                     pelda.registers[i].second = current.top();
-                    temp+="reg["+to_string(i+1)+"]="+current.top()+"\n";
+                    temp+="reg["+to_string(i+1)+"] = "+current.top()+"\n";
                     operands.push(current.top());
                     break;
                 }
@@ -108,11 +112,12 @@ int main()
 {
     szoveg pelda;
    // pelda.fnev=''proba.txt'';
-    pelda.registers = { {0, ""}, {0, ""}, {0, ""}, {0, ""}};
+    pelda.registers = { {0, ""}, {0, ""}, {0, ""}, {0, ""}, {0, ""}, {0, ""}};
+    pelda.lkod.push("*");
+    pelda.lkod.push("2");
     pelda.lkod.push("+");
     pelda.lkod.push("1");
     pelda.lkod.push("3");
-    pelda.lkod.push("peldavaltozo");
     //lengyel(pelda);
     regiszteres(pelda);
     //gepikod(pelda);
