@@ -4,6 +4,8 @@
 #include <stack>
 #include <cstdlib>
 #include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 using namespace std;
 struct szoveg { //szerintem a structban inkább egy-egy aritmetikai utasításnak kéne csak lenine, nem az egész kódnak
@@ -11,6 +13,15 @@ struct szoveg { //szerintem a structban inkább egy-egy aritmetikai utasításna
  stack<string> lkod;
  string gkod;
  vector<pair<bool, double> > registers; //van-e az adott regiszterben valami
+ int line_num; //sorok száma
+};
+
+struct sor{
+ string valtozonev;
+ stack<string> lkod;
+	string atirt;
+ int regiszter; //0, ha memóriában van tárolva
+ int memo; //0, ha regiszterben van tárolva
 };
 
 void lengyel (szoveg &pelda)
@@ -18,6 +29,22 @@ void lengyel (szoveg &pelda)
 // Peti, kapok .txt fájlt, aminél a példa legyen:  proba.txt VALAMI=a^b+(c+d)*a-e
 // ezt leforditom lengyel formává:  példa.lkod={VALAMI;-e+*a+dc^ba}
 
+}
+
+void sortatir (valtozo &pelda){
+	stack<string> curr = pelda.lkod;
+	string res;
+ while(!curr.empty()){
+		if(isdigit(curr.top()[0])){
+ 			   
+  }
+		else if(isalpha(curr.top()[0])){
+			
+		}
+		else{
+			
+		}
+ }
 }
 
 void regiszteres (szoveg &pelda)
@@ -40,7 +67,7 @@ void regiszteres (szoveg &pelda)
                 if(pelda.registers[i].first != true){
                     pelda.registers[i].first = true;
                     pelda.registers[i].second = strtod(current.top().c_str(), NULL);
-                    temp+="reg["+to_string(i)+"]="+current.top();
+                    temp+="reg["+to_string(i+1)+"]="+current.top();
                     current.pop();
                 }
             }
@@ -48,6 +75,7 @@ void regiszteres (szoveg &pelda)
         pelda.gkod+=temp;
     }
 }
+
 
 
 void gepikod (szoveg &pelda)
