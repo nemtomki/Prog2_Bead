@@ -36,7 +36,7 @@ void regiszteres (szoveg &pelda)
             current.pop();
         }
         else {
-            for(int i = 0; i < pelda.registers.size(); i++){
+            for(int i = 0; i < pelda.registers.size()-1; i++){
                 if(pelda.registers[i].first != true){
                     pelda.registers[i].first = true;
                     pelda.registers[i].second = strtod(current.top().c_str(), NULL);
