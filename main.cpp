@@ -6,22 +6,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <queue>
+#include <algorithm>
 
 using namespace std;
 struct szoveg { //szerintem a structban inkább egy-egy aritmetikai utasításnak kéne csak lenine, nem az egész kódnak
- string fnev;
- stack<string> lkod;
- string gkod;
- vector<pair<bool, double> > registers; //van-e az adott regiszterben valami
- int line_num; //sorok száma
+    string fnev;
+    stack<string> lkod;
+    string gkod;
+    vector<pair<bool, string> > registers; //van-e az adott regiszterben valami + a tartalma - az utóbbi azért string, mert inputon kapott változó is lehet benne
+    int line_num; //sorok száma
 };
 
-struct sor{
- string valtozonev;
- stack<string> lkod;
-	string atirt;
- int regiszter; //0, ha memóriában van tárolva
- int memo; //0, ha regiszterben van tárolva
+struct sor{ //lehet így csinálom majd, még nem biztos
+    string valtozonev;
+    stack<string> lkod;
+    string atirt;
+    int regiszter; //0, ha memóriában van tárolva
+    int memo; //0, ha regiszterben van tárolva
 };
 
 void lengyel (szoveg &pelda)
@@ -31,7 +33,7 @@ void lengyel (szoveg &pelda)
 
 }
 
-void sortatir (sor &pelda){
+/*void sortatir (sor &pelda){
 	stack<string> curr = pelda.lkod;
 	string res;
     while(!curr.empty()){
@@ -45,37 +47,51 @@ void sortatir (sor &pelda){
 
         }
     }
-}
+}*/
+
 
 void regiszteres (szoveg &pelda)
 {
 //Áron kapja a lengyel formát: lengyel.txt ab^cd+a*+e-
 //leforditja regiszteresre:
     stack<string> current = pelda.lkod;
+    string resultname;
     if(!current.empty()){
-        string resultname = current.top();
+        resultname = current.top();
         current.pop();
     }
+    queue<string> operands;
     while(!current.empty()){
         string temp;
-        string operand_1;
-        string operand_2;
-        if(strtod(current.top().c_str(), NULL)==0.0){
-            temp+="reg[1]"+current.top()+"reg[2];";
+        if(! (isdigit(current.top()[0]) || isalpha(current.top()[0])) && ! current.top().empty()){
+            string op1 = operands.front();
+            operands.pop();
+            string op2 = operands.front();
+            operands.pop();
+            int op1_reg = distance(pelda.registers.begin(), find_if(pelda.registers.begin(), pelda.registers.end(),
+                [op1](const pair<bool,string>& elem) {return op1.compare(elem.second)==0;}))+1;
+            int op2_reg = distance(pelda.registers.begin(), find_if(pelda.registers.begin(), pelda.registers.end(),
+                [op2](const pair<bool,string>& elem) {return op2.compare(elem.second)==0;}))+1;
+            temp += resultname + " = reg["+to_string(op1_reg)+"] "+current.top()+" reg["+to_string(op2_reg)+"]\n";
+
             current.pop();
+            //cout <<"registers: " << op1_reg << "\t" << op2_reg << endl;
         }
-        else {
-            for(int i = 0; i < pelda.registers.size()-1; i++){
-                if(pelda.registers[i].first != true){
+        else if(!current.top().empty()){
+            for(int i = 0; i < pelda.registers.size(); i++){
+                if(pelda.registers[i].first == 0){
                     pelda.registers[i].first = true;
-                    pelda.registers[i].second = strtod(current.top().c_str(), NULL);
-                    temp+="reg["+to_string(i+1)+"]="+current.top();
-                    current.pop();
+                    pelda.registers[i].second = current.top();
+                    temp+="reg["+to_string(i+1)+"]="+current.top()+"\n";
+                    operands.push(current.top());
+                    break;
                 }
             }
+            current.pop();
         }
-        pelda.gkod+=temp;
+        pelda.gkod += temp;
     }
+    cout << pelda.gkod;
 }
 
 
@@ -92,8 +108,13 @@ int main()
 {
     szoveg pelda;
    // pelda.fnev=''proba.txt'';
-    lengyel(pelda);
+    pelda.registers = { {0, ""}, {0, ""}, {0, ""}, {0, ""}};
+    pelda.lkod.push("+");
+    pelda.lkod.push("1");
+    pelda.lkod.push("3");
+    pelda.lkod.push("peldavaltozo");
+    //lengyel(pelda);
     regiszteres(pelda);
-    gepikod(pelda);
+    //gepikod(pelda);
     return 0;
 }
