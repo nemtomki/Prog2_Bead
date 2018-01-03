@@ -3,15 +3,118 @@
 #include <struct>
 #include <string>
 using namespace std;
+
+struct darab
+{
+    string nev;
+    stack<string> lkod;
+ //ha vmi kell meg ide irjatok batran;
+};
 struct szoveg {
-string fnev;
- stack<string> lkod;
- string gkod;
+ string fnev;
+ vector<darab>;
 } ;
+
 void lengyel (szoveg &pelda)
 {
-// Peti, kapok .txt fájlt, aminél a példa legyen:  proba.txt VALAMI=a^b+(c+d)*a-e
-// ezt leforditom lengyel formává:  példa.lkod={VALAMI;-e+*a+dc^ba}
+// pelda.txt-t csatoltam, mint minta
+// 
+{
+    fstream f,g;
+    f.open("proba.txt");
+    g.open("proba.txt");
+    string aktu;
+    string eredet;
+    char szam;
+    darab elso;
+    string vissza;
+    stack<char> verem;
+    while (f.good())
+    {
+        elso.lkod=stack<string>();
+        getline(g,eredet,';');
+        cout << eredet << endl;
+        getline(f,aktu,'=');
+        elso.nev=aktu;
+        cout << aktu<< endl;
+        szam='.';
+        while (szam!=';' )
+        {
+            f >> szam;
+            if (szam=='*' || szam=='/' )
+            {
+                while (!verem.empty() && verem.top()!='(' && verem.top()!='+' && verem.top()!='-')
+                {
+                    cout << verem.top();
+                    vissza=verem.top();
+                    elso.lkod.push(vissza);
+                    verem.pop();
+                }
+                verem.push(szam);
+            }
+            else
+            {
+                if (szam=='+' || szam=='-' )
+                {
+                    while (!verem.empty() && verem.top()!='(' )
+                    {
+                        cout << verem.top();
+                        vissza=verem.top();
+                        elso.lkod.push(vissza);
+                        verem.pop();
+                    }
+                    verem.push(szam);
+                }
+                else
+                {
+
+                    if (szam==')')
+                    {
+                        while (verem.top()!='(')
+                        {
+                            cout << verem.top();
+                            vissza=verem.top();
+                            elso.lkod.push(vissza);
+                            verem.pop();
+                        }
+                        verem.pop();
+                    }
+                    else
+                    {
+                        if (szam=='(')
+                        {
+                            verem.push('(');
+                        }
+                        else
+                        {
+                            if (szam==';')
+                            {
+                                ;
+                            }
+                            else
+                            {
+                                cout << szam;
+                                vissza=szam;
+                                elso.lkod.push(vissza);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        while (!verem.empty())
+        {
+            cout << verem.top();
+            vissza=verem.top();
+            elso.lkod.push(vissza);
+            verem.pop();
+        }
+        cout << endl;
+        pelda.komplett.push(elso);
+        f >> ws;
+    }
+
+}
 
 }
 
